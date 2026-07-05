@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:money_manager/ui/home/home_screen.dart';
 
 void main() {
@@ -11,9 +12,9 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ScreenUtil(
-      options: const ScreenUtilOptions(
-        designSize: Size(360, 690),
+    return const ScreenUtil(
+      options: ScreenUtilOptions(
+        designSize: Size(360, 780),
         fontFactorByWidth: 2.0,
         fontFactorByHeight: 1.0,
         flipSizeWhenLandscape: true,
