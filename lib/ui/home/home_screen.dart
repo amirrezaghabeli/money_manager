@@ -36,88 +36,104 @@ class HomeScreen extends StatelessWidget {
       children: [
         Container(
           width: double.infinity,
-          margin: EdgeInsets.symmetric(horizontal: context.w(16)),
+          margin: EdgeInsets.symmetric(
+            horizontal: context.w(16),
+            vertical: context.h(16),
+          ),
+          padding: EdgeInsets.symmetric(
+            horizontal: context.w(16),
+            vertical: context.h(16),
+          ),
           decoration: BoxDecoration(
             color: AppColors.backgroundColor,
             borderRadius: BorderRadius.circular(16),
-            boxShadow: [const BoxShadow(color: AppColors.onSurfaceColor)],
-          ),
-          child: Row(
-            children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('BALANCE', style: TextStyle(fontSize: context.sp(16))),
-                  Row(
-                    children: [
-                      Text(
-                        '2400',
-                        style: TextStyle(
-                          fontSize: context.sp(16),
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      Text(
-                        '\$',
-                        style: TextStyle(
-                          fontSize: context.sp(16),
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.onSurfaceColor.withValues(alpha: 0.4),
+                blurRadius: 2,
               ),
             ],
           ),
+          child: _pieChart(context),
         ),
-        _pieChart(),
       ],
     );
   }
 
-  AspectRatio _pieChart() {
-    const textStyle = TextStyle(
-      fontSize: 14,
+  Widget _pieChart(BuildContext context) {
+    final textStyle = TextStyle(
+      fontSize: context.sp(12),
       fontWeight: FontWeight.bold,
       color: AppColors.backgroundColor,
     );
-    return AspectRatio(
-      aspectRatio: 1.0,
-      child: Container(
-        // color: Colors.blue,
-        margin: const EdgeInsets.symmetric(horizontal: 16),
-        child: PieChart(
-          PieChartData(
-            sections: [
-              PieChartSectionData(
-                value: 10,
-                color: Colors.blue,
-                titleStyle: textStyle,
-              ),
-              PieChartSectionData(
-                value: 20,
-                color: Colors.amber,
-                titleStyle: textStyle,
-              ),
-              PieChartSectionData(
-                value: 30,
-                color: Colors.pink,
-                titleStyle: textStyle,
-              ),
-              PieChartSectionData(
-                value: 40,
-                color: Colors.green,
-                titleStyle: textStyle,
-              ),
-              PieChartSectionData(
-                value: 50,
-                color: Colors.red,
-                titleStyle: textStyle,
-              ),
-            ],
+    return SizedBox(
+      // color: Colors.blue,
+      width: context.w(220),
+      height: context.w(220),
+
+      child: Stack(
+        children: [
+          PieChart(
+            PieChartData(
+              sections: [
+                PieChartSectionData(
+                  value: 10,
+                  color: Colors.blue,
+                  titleStyle: textStyle,
+                ),
+                PieChartSectionData(
+                  value: 20,
+                  color: Colors.amber,
+                  titleStyle: textStyle,
+                ),
+                PieChartSectionData(
+                  value: 30,
+                  color: Colors.pink,
+                  titleStyle: textStyle,
+                ),
+                PieChartSectionData(
+                  value: 40,
+                  color: Colors.green,
+                  titleStyle: textStyle,
+                ),
+                PieChartSectionData(
+                  value: 50,
+                  color: Colors.red,
+                  titleStyle: textStyle,
+                  radius: 50,
+                ),
+              ],
+            ),
           ),
-        ),
+          Positioned(
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0,
+            child: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    '2400',
+                    style: TextStyle(
+                      fontSize: context.sp(20),
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  SizedBox(width: context.w(6)),
+                  Text(
+                    '\$',
+                    style: TextStyle(
+                      fontSize: context.sp(20),
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
