@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:money_manager/ui/home/home_screen.dart';
+
+import 'ui/login/login_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
         fontFactorByHeight: 1.0,
         flipSizeWhenLandscape: true,
       ),
-      child: MaterialApp(title: 'Flutter Demo', home: HomeScreen()),
+      child: MaterialApp(title: 'Money manager', home: LoginScreen()),
     );
   }
 }

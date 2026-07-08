@@ -1,8 +1,8 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:money_manager/ui/core/constants/app_strings.dart';
-import 'package:money_manager/ui/core/theme/app_colors.dart';
+import 'package:money_manager/core/constants/app_colors.dart';
+import 'package:money_manager/core/constants/app_strings.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
