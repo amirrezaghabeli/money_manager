@@ -1,12 +1,12 @@
+import 'package:injectable/injectable.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-import '../domain/models/user.dart';
+import '../../domain/models/user.dart';
 
+@LazySingleton()
 class DataBaseService {
   static Database? _db;
-  static final DataBaseService instance = DataBaseService._constructor();
-  DataBaseService._constructor();
 
   //users table and column name
   final String _usersTableName = 'users';
@@ -53,21 +53,22 @@ class DataBaseService {
       onCreate: (db, version) async {
         //users table
         await db.execute('''
-          CREATE TABLE $_usersTableName(
-            $_usersIdColumnName INTEGER PRIMARY KEY AUTOINCREMENT
-            $_usersNameColumnName TEXT NOT NULL
+          CREATE TABLE $_usersTableName (
+            $_usersIdColumnName INTEGER PRIMARY KEY AUTOINCREMENT,
+            $_usersNameColumnName TEXT NOT NULL,
             $_usersPasswordColumnName TEXT NOT NULL
           )
           ''');
 
         //categories table
         await db.execute('''
-        CREATE TABLE $_categoriesTableName(
-          $_categoriesIdColumnName INTEGER PRIMARY KEY AUTOINCREMENT
-          $_categoriesIconColumnName TEXT NOT NULL
-          $_categoriesColorColumnName TEXT NOT NULL
-          $_categoriesNameColumnName TEXT NOT NULL
-          $_categoriesisExpenseColumnName INTEGER NOT NULL
+        CREATE TABLE $_categoriesTableName (
+          $_categoriesIdColumnName INTEGER PRIMARY KEY AUTOINCREMENT,
+          $_categoriesUserIdColumnName INTEGER NOT NULL,
+          $_categoriesIconColumnName TEXT NOT NULL,
+          $_categoriesColorColumnName TEXT NOT NULL,
+          $_categoriesNameColumnName TEXT NOT NULL,
+          $_categoriesisExpenseColumnName INTEGER NOT NULL,
           FOREIGN KEY ($_categoriesUserIdColumnName)
             REFERENCES $_usersTableName ($_usersIdColumnName)
             ON DELETE CASCADE
@@ -78,6 +79,8 @@ class DataBaseService {
         await db.execute('''
       CREATE TABLE $_transactionsTableName (
         $_transactionsIdColumnName INTEGER PRIMARY KEY AUTOINCREMENT,
+        $_transactionsCategoryIdColumnName INTEGER NOT Null,
+        $_transactionsUserIdColumnName INTEGER NOT Null,
         $_transactionsAmountColumnName TEXT NOT NULL,
         $_transactionsUnitColumnName TEXT NOT NULL,
         $_transactionsDateColumnName TEXT NOT NULL,
@@ -86,7 +89,7 @@ class DataBaseService {
         $_transactionsPhotoColumnName TEXT NOT NULL,
         FOREIGN KEY ($_transactionsCategoryIdColumnName)
           REFERENCES $_categoriesTableName ($_categoriesIdColumnName)
-          ON DELETE SET NULL
+          ON DELETE SET NULL,
         FOREIGN KEY ($_transactionsUserIdColumnName)
           REFERENCES $_usersTableName ($_usersIdColumnName)
           ON DELETE CASCADE
