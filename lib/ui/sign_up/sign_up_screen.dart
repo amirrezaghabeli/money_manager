@@ -1,0 +1,139 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:money_manager/core/constants/app_colors.dart';
+import 'package:money_manager/gen/assets.gen.dart';
+import 'package:money_manager/ui/shared/main_text_field.dart';
+
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
+
+  @override
+  State<SignUpScreen> createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
+  late final TextEditingController _usernameController;
+  late final TextEditingController _passwordController;
+  late final TextEditingController _confirmPasswordController;
+
+  @override
+  void initState() {
+    _usernameController = TextEditingController();
+    _passwordController = TextEditingController();
+    _confirmPasswordController = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppColors.backgroundColor,
+      body: _body(context),
+    );
+  }
+
+  Widget _body(BuildContext context) {
+    return SafeArea(
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: context.w(46)),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [const SizedBox(), _form(context), const SizedBox()],
+        ),
+      ),
+    );
+  }
+
+  Widget _form(BuildContext context) {
+    return Column(
+      children: [
+        _signInText(context),
+        SizedBox(height: context.h(24)),
+        MainTextField(
+          controller: _usernameController,
+          hintText: 'Username',
+          prefixIcon: Assets.icons.user,
+        ),
+        SizedBox(height: context.h(16)),
+        MainTextField(
+          controller: _passwordController,
+          hintText: 'Password',
+          prefixIcon: Assets.icons.unlock,
+        ),
+        SizedBox(height: context.h(16)),
+        MainTextField(
+          controller: _confirmPasswordController,
+          hintText: 'Confirm password',
+          prefixIcon: Assets.icons.unlock,
+        ),
+        SizedBox(height: context.h(16)),
+        _signInRow(context),
+        SizedBox(height: context.h(32)),
+        _signUpButton(context),
+      ],
+    );
+  }
+
+  Widget _signInText(BuildContext context) {
+    return Text(
+      'Sign up',
+      style: TextStyle(
+        fontSize: context.sp(24),
+        fontWeight: FontWeight.w500,
+        color: AppColors.onSurfaceColor,
+      ),
+    );
+  }
+
+  Widget _signInRow(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          'Already have an account?',
+          style: TextStyle(
+            fontSize: context.sp(12),
+            fontWeight: FontWeight.w400,
+            color: AppColors.onSurfaceColor,
+          ),
+        ),
+        TextButton(
+          onPressed: () {},
+          child: Text(
+            'Sign in',
+            style: TextStyle(
+              fontSize: context.sp(12),
+              fontWeight: FontWeight.w600,
+              color: AppColors.primaryColor,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _signUpButton(BuildContext context) {
+    return Container(
+      width: context.w(130),
+      height: context.h(46),
+      decoration: const BoxDecoration(color: AppColors.primaryColor),
+      alignment: Alignment.center,
+      child: Text(
+        'Sign up',
+        style: TextStyle(
+          fontSize: context.sp(14),
+          fontWeight: FontWeight.w400,
+          color: AppColors.onSurfaceColor,
+        ),
+      ),
+    );
+  }
+}
