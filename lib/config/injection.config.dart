@@ -15,6 +15,7 @@ import 'package:money_manager/data/repositories/user_repository.dart' as _i957;
 import 'package:money_manager/data/repositories/user_repository_local.dart'
     as _i600;
 import 'package:money_manager/data/services/database_service.dart' as _i450;
+import 'package:money_manager/ui/login/bloc/login_bloc.dart' as _i51;
 import 'package:money_manager/ui/sign_up/bloc/sign_up_bloc.dart' as _i446;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -29,6 +30,9 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i600.UserRepositoryLocal(
         dataBaseService: gh<_i450.DataBaseService>(),
       ),
+    );
+    gh.factory<_i51.LoginBloc>(
+      () => _i51.LoginBloc(userRepository: gh<_i957.UserRepository>()),
     );
     gh.factory<_i446.SignUpBloc>(
       () => _i446.SignUpBloc(userRepository: gh<_i957.UserRepository>()),
