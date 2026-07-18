@@ -125,7 +125,7 @@ class DataBaseService {
     });
   }
 
-  Future<User?> getUser({
+  Future<String?> getUser({
     required String name,
     required String password,
   }) async {
@@ -139,6 +139,7 @@ class DataBaseService {
     if (result.isEmpty) {
       return null;
     }
-    return User.fromJson(result.first);
+    final id = result.first[_usersIdColumnName] as int;
+    return id.toString();
   }
 }

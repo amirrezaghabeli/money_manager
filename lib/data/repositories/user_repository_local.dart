@@ -21,7 +21,7 @@ class UserRepositoryLocal implements UserRepository {
   }
 
   @override
-  Future<Result<User>> getUser({
+  Future<Result<String>> getUser({
     required String name,
     required String password,
   }) async {

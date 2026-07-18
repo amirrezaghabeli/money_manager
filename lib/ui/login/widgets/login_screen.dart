@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:money_manager/config/injection.dart';
 import 'package:money_manager/core/constants/app_colors.dart';
 import 'package:money_manager/gen/assets.gen.dart';
+import 'package:money_manager/ui/home/home_screen.dart';
+import 'package:money_manager/ui/login/bloc/login_bloc.dart';
 import 'package:money_manager/ui/shared/main_text_field.dart';
+import 'package:money_manager/ui/sign_up/widgets/sign_up_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -31,9 +36,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
-      body: _body(context),
+    return BlocProvider(
+      create: (context) => getIt<LoginBloc>(),
+      child: Scaffold(
+        backgroundColor: AppColors.backgroundColor,
+        body: _body(context),
+      ),
     );
   }
 
@@ -97,7 +105,13 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
         TextButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute<void>(
+                builder: (context) => const SignUpScreen(),
+              ),
+            );
+          },
           child: Text(
             'Register Here',
             style: TextStyle(
@@ -112,19 +126,52 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _loginButton(BuildContext context) {
-    return Container(
-      width: context.w(130),
-      height: context.h(46),
-      decoration: const BoxDecoration(color: AppColors.primaryColor),
-      alignment: Alignment.center,
-      child: Text(
-        'Login',
-        style: TextStyle(
-          fontSize: context.sp(14),
-          fontWeight: FontWeight.w400,
-          color: AppColors.onSurfaceColor,
-        ),
-      ),
+    return BlocConsumer<LoginBloc, LoginState>(
+      listener: (context, state) {
+        if (state.loginStatus.isFailure) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(const SnackBar(content: Text('User not found!')));
+        }
+        if (state.loginStatus.isSuccess) {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute<void>(builder: (context) => const HomeScreen()),
+          );
+        }
+      },
+      builder: (context, state) {
+        if (state.loginStatus.isLoading) {
+          return SizedBox(
+            width: context.h(46),
+            height: context.h(46),
+            child: const Center(child: CircularProgressIndicator()),
+          );
+        }
+        return GestureDetector(
+          onTap: () {
+            context.read<LoginBloc>().add(
+              LoginButtonClicked(
+                username: _usernameController.text.trim(),
+                password: _passwordController.text.trim(),
+              ),
+            );
+          },
+          child: Container(
+            width: context.w(130),
+            height: context.h(46),
+            decoration: const BoxDecoration(color: AppColors.primaryColor),
+            alignment: Alignment.center,
+            child: Text(
+              'Login',
+              style: TextStyle(
+                fontSize: context.sp(14),
+                fontWeight: FontWeight.w400,
+                color: AppColors.onSurfaceColor,
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
